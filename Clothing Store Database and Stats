@@ -1,0 +1,28 @@
+--Create a clothing store database
+
+CREATE TABLE store (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, quanity INTEGER, color TEXT, size TEXT);
+
+INSERT INTO store VALUES (1, "shirt",4,10,"red","medium");
+INSERT INTO store VALUES (2, "shirt",6,5,"red","large");
+INSERT INTO store VALUES (3, "shirt",3,12,"red","small");
+INSERT INTO store VALUES (4, "shirt",4,2,"blue","medium");
+INSERT INTO store VALUES (5, "shirt",6,15,"blue","large");
+INSERT INTO store VALUES (6, "shirt",3,5,"blue","small");
+INSERT INTO store VALUES (7, "shirt",4,10,"green","medium");
+INSERT INTO store VALUES (8, "shirt",6,5,"green","large");
+INSERT INTO store VALUES (9, "shirt",3,12,"green","small");
+INSERT INTO store VALUES (10, "shirt",4,2,"yellow","medium");
+INSERT INTO store VALUES (11, "shirt",6,15,"yellow","large");
+INSERT INTO store VALUES (12, "shirt",3,5,"yellow","small");
+INSERT INTO store VALUES (13, "shirt",4,10,"purple","medium");
+INSERT INTO store VALUES (14, "shirt",6,5,"purple","large");
+INSERT INTO store VALUES (15, "shirt",3,12,"purple","small");
+
+--display the database ordered by price
+SELECT * FROM store ORDER BY price asc;
+
+--how many of each color does the store have?
+SELECT color, SUM(quanity) FROM store GROUP BY color; 
+
+--how many of each size does the store have?
+SELECT size, SUM(quanity) FROM store GROUP BY size;
