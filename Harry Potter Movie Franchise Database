@@ -1,0 +1,112 @@
+/*Tables regarding Harry Potter Movie Franchise*/
+
+CREATE TABLE HarryPotterMovies(id INTEGER PRIMARY KEY, movietitle TEXT, movielength INTEGER, rating TEXT);
+
+/*Showing Length in Minutes and Rating as Personal Thoughts*/
+
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Sorcerer’s Stone", "152", "GREAT");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Chamber of Secrets", "161", "GOOD");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Prisoner of Azkaban", "142", "EPIC");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Goblet of Fire", "157", "GOOD");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Order of the Phoenix", "139", "GREAT");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Half Blood Prince", "153", "GREAT");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Deathly Hallows1", "146", "EPIC");
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating) VALUES ("Harry Potter and the Deathly Hallows2", "130", "GOOD");
+
+SELECT * FROM HarryPotterMovies;
+
+/*Showing movies longer than 160 minutes*/
+SELECT * FROM HarryPotterMovies WHERE movielength >160;
+
+/*Showing movies longer than 160 minutes with GREAT rating*/
+SELECT * FROM HarryPotterMovies WHERE movielength <160 and rating = "GREAT";
+
+/*Showing movies rated Epic and Great using IN function*/
+SELECT * FROM HarryPotterMovies WHERE rating IN ("EPIC","GREAT");
+
+/*Showing moviese not rated Epic or Great using NOT IN function*/
+SELECT * FROM HarryPotterMovies WHERE rating NOT IN ("EPIC","GREAT");
+
+
+CREATE TABLE MovieRatings (id INTEGER PRIMARY KEY, movietitle TEXT, yearreleased INTEGER, onlinerating TEXT);
+
+/*Rating is from https://www.imdb.com/list/ls062636319/?sort=list_order,asc&st_dt=&mode=detail&page=1&ref_=ttls_vm_dtl*/
+
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Sorcerer’s Stone", "2001", "7.6");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Chamber of Secrets", "2002", "7.4");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Prisoner of Azkaban", "2004", "7.9");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Goblet of Fire", "2005", "7.7");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Order of the Phoenix", "2007", "7.5");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Half Blood Prince", "2009", "7.6");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Deathly Hallows1", "2010", "7.7");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Harry Potter and the Deathly Hallows2", "2011", "8.1");
+
+SELECT * FROM MovieRatings;
+
+/*Show Movies with online rating over 7.5*/
+SELECT * FROM HarryPotterMovies WHERE movietitle IN (SELECT movietitle FROM MovieRatings WHERE onlinerating > 7.5);
+
+/*Show Movies with personal rating of Great and Epic*/
+SELECT * FROM MovieRatings WHERE movietitle IN (SELECT movietitle FROM HarryPotterMovies WHERE rating ="GREAT" AND "EPIC");
+
+/*Show All movies and their length in minutes*/
+SELECT movietitle, movielength FROM HarryPotterMovies;
+
+/*Show movies that are longer than 120minutes with a rating of Great*/
+SELECT * FROM HarryPotterMovies WHERE movielength >120 AND rating ="GREAT" ORDER BY movielength ASC;
+
+/* Create a new column*/
+SELECT movietitle, CASE WHEN yearreleased >2008 THEN "Newer" ELSE "Older" END as "MovieAge" FROM MovieRatings;
+
+/*Show movies that are rated Great or less than 150 minutes.*/
+SELECT * FROM HarryPotterMovies WHERE movielength <150 OR rating = "GREAT";
+
+/*What is the total length of all movies?*/
+SELECT SUM(movielength) FROM HarryPotterMovies;
+
+/*How many movies are there in the Harry Potter series?*/
+SELECT COUNT(*) FROM HarryPotterMovies;
+
+/*What is the average online rating?*/
+SELECT AVG(onlinerating)FROM MovieRatings;
+
+/*How many  movies in each personal rating?*/
+SELECT rating, COUNT(*) FROM HarryPotterMovies GROUP BY rating;
+
+/*Average Online Rating over >7.7*/
+SELECT movietitle, AVG(onlinerating) AS avg_onlinerating FROM MovieRatings 
+    GROUP BY onlinerating
+    HAVING avg_onlinerating >7.7;
+
+/*Inner JOIN both tables by ID*/    
+SELECT HarryPotterMovies.movietitle, MovieRatings.yearreleased,  HarryPotterMovies.rating, MovieRatings.onlinerating  FROM HarryPotterMovies 
+    JOIN MovieRatings ON HarryPotterMovies.ID = MovieRatings.ID ORDER BY yearreleased;
+
+/*What were the online ratings for those personally rated Epic?*/
+SELECT HarryPotterMovies.movietitle, MovieRatings.yearreleased,  HarryPotterMovies.rating, MovieRatings.onlinerating  FROM HarryPotterMovies 
+    JOIN MovieRatings ON HarryPotterMovies.ID = MovieRatings.ID 
+    WHERE rating ="EPIC";
+    
+/*Outer JOIN both tables by ID*/
+SELECT HarryPotterMovies.movietitle,  HarryPotterMovies.rating, MovieRatings.onlinerating  FROM HarryPotterMovies 
+LEFT OUTER JOIN MovieRatings ON HarryPotterMovies.ID = MovieRatings.ID
+ORDER BY yearreleased;
+    
+CREATE TABLE films (id INTEGER PRIMARY KEY,
+    title TEXT,
+    sequel_id INTEGER);
+
+INSERT INTO films VALUES (1,"Harry Potter and the Sorcerer’s Stone",2);
+INSERT INTO films VALUES (2,"Harry Potter and the Chamber of Secrets",3);
+INSERT INTO films VALUES (3,"Harry Potter and the Prisoner of Azkaban",4);
+INSERT INTO films VALUES (4,"Harry Potter and the Goblet of Fire",5);
+INSERT INTO films VALUES (5,"Harry Potter and the Order of the Phoenix",6);
+INSERT INTO films VALUES (6,"Harry Potter and the Half Blood Prince",7);
+INSERT INTO films VALUES (7,"Harry Potter and the Deathly Hallows1",8);
+INSERT INTO films VALUES (8,"Harry Potter and the Deathly Hallows2",NULL);
+
+/* Movie Titles next to the title of their sequel using JOIN*/
+SELECT films.title AS Film_Title, sequel.title AS Sequel_Title
+FROM Films
+LEFT OUTER JOIN films sequel
+ON films.sequel_id = sequel.id;
