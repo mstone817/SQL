@@ -110,3 +110,14 @@ SELECT films.title AS Film_Title, sequel.title AS Sequel_Title
 FROM Films
 LEFT OUTER JOIN films sequel
 ON films.sequel_id = sequel.id;
+
+/*Updating a record to reflect a better rating*/
+UPDATE HarryPotterMovies SET rating = "GREAT" WHERE movietitle= "Harry Potter and the Chamber of Secrets";
+SELECT * FROM HarryPotterMovies;
+
+/*Decided that part 1 and 2 of the same movie should be on one line*/
+DELETE FROM HarryPotterMovies WHERE movietitle = "Harry Potter and the Deathly Hallows2";
+SELECT * FROM HarryPotterMovies;
+
+UPDATE HarryPotterMovies SET movietitle ="HarryPotter and the Deathly Hallows 1&2" WHERE movietitle = "Harry Potter and the Deathly Hallows1";
+SELECT * FROM HarryPotterMovies;
