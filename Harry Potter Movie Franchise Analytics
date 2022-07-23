@@ -1,6 +1,10 @@
 /*Tables regarding Harry Potter Movie Franchise*/
 
-CREATE TABLE HarryPotterMovies(id INTEGER PRIMARY KEY, movietitle TEXT, movielength INTEGER, rating TEXT);
+CREATE TABLE HarryPotterMovies(
+    id INTEGER PRIMARY KEY, 
+    movietitle TEXT, 
+    movielength INTEGER, 
+    rating TEXT);
 
 /*Showing Length in Minutes and Rating as Personal Thoughts*/
 
@@ -28,7 +32,11 @@ SELECT * FROM HarryPotterMovies WHERE rating IN ("EPIC","GREAT");
 SELECT * FROM HarryPotterMovies WHERE rating NOT IN ("EPIC","GREAT");
 
 
-CREATE TABLE MovieRatings (id INTEGER PRIMARY KEY, movietitle TEXT, yearreleased INTEGER, onlinerating TEXT);
+CREATE TABLE MovieRatings (
+    id INTEGER PRIMARY KEY, 
+    movietitle TEXT, 
+    yearreleased INTEGER, 
+    onlinerating TEXT);
 
 /*Rating is from https://www.imdb.com/list/ls062636319/?sort=list_order,asc&st_dt=&mode=detail&page=1&ref_=ttls_vm_dtl*/
 
@@ -107,17 +115,41 @@ INSERT INTO films VALUES (8,"Harry Potter and the Deathly Hallows2",NULL);
 
 /* Movie Titles next to the title of their sequel using JOIN*/
 SELECT films.title AS Film_Title, sequel.title AS Sequel_Title
-FROM Films
-LEFT OUTER JOIN films sequel
-ON films.sequel_id = sequel.id;
+    FROM Films
+    LEFT OUTER JOIN films sequel
+    ON films.sequel_id = sequel.id;
 
 /*Updating a record to reflect a better rating*/
 UPDATE HarryPotterMovies SET rating = "GREAT" WHERE movietitle= "Harry Potter and the Chamber of Secrets";
+
 SELECT * FROM HarryPotterMovies;
 
 /*Decided that part 1 and 2 of the same movie should be on one line*/
 DELETE FROM HarryPotterMovies WHERE movietitle = "Harry Potter and the Deathly Hallows2";
+
 SELECT * FROM HarryPotterMovies;
 
 UPDATE HarryPotterMovies SET movietitle ="HarryPotter and the Deathly Hallows 1&2" WHERE movietitle = "Harry Potter and the Deathly Hallows1";
 SELECT * FROM HarryPotterMovies;
+
+/*Due to the increase in movies, we should add Fantastic Beasts to the chart*/
+ALTER TABLE HarryPotterMovies ADD series TEXT default "Harry Potter";
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating, series) VALUES ("Fantastic Beasts and Where to Find Them", 133, "GREAT", "Fantastic Beasts");
+
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating, series) VALUES ("Fantastic Beasts: The Crimes of Grindelwald", 134, "GOOD", "Fantastic Beasts");
+
+INSERT INTO HarryPotterMovies (movietitle, movielength, rating, series) VALUES ("Fantastic Beasts: The Secrets of Dumbledore", 142, "GREAT", "Fantastic Beasts");
+
+SELECT * FROM HarryPotterMovies;
+
+/*We need to update the name of the table to reflect current data*/
+ALTER TABLE HarryPotterMovies RENAME TO "Wizarding_World_Franchise";
+
+SELECT * FROM Wizarding_World_Franchise;
+
+/*Now we need to update the data in the other table*/
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Fantastic Beasts and Where to Find Them", "2011", "7.2");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Fantastic Beasts: The Crimes of Grindelwald", "2016", "6.5");
+INSERT INTO MovieRatings (movietitle, yearreleased, onlinerating) VALUES ("Fantastic Beasts: The Secrets of Dumbledore", "2022", "6.2");
+
+SELECT * FROM MovieRatings;
