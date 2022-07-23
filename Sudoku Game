@@ -1,0 +1,52 @@
+/* We love playing Sudoku on our phones and now it is time to analyze the game data */
+
+CREATE TABLE Sudoku (
+    id INTEGER PRIMARY KEY,
+    difficulty TEXT,
+    games_won INTEGER,
+    best_time INTEGER,
+    win_rate INTEGER,
+    win_streak INTEGER);
+    
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Easy", "58", "2:15", "98%", "20");
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Medium", "32", "7:30", "92%", "10");
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Hard", "8", "12:15", "65%", "3");
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Expert", "5", "22:42", "75%", "2");
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Giant", "7", "32:14", "20%", "2");
+INSERT INTO Sudoku (difficulty, games_won, best_time, win_rate, win_streak)
+    VALUES ("Fast", "25", "1:10", "95%", "12");
+    
+SELECT * FROM Sudoku;
+
+/*We have played several more games on Easy difficulty so need to update the table*/
+UPDATE Sudoku SET games_won =64 
+    WHERE difficulty = "Easy";
+    
+Select * FROM Sudoku;
+
+/* The game had an update and removed the difficulty called Giant. */
+DELETE FROM Sudoku 
+    WHERE difficulty= "Giant";
+
+/* What game difficulties have a win rate higher than 90%? */
+SELECT * FROM Sudoku 
+    WHERE win_rate >"90%";
+
+/* Which game difficulty has a win rate above 70% with a win streak over 5? */
+SELECT * FROM Sudoku
+    WHERE win_rate >"70%"
+    AND win_streak >5;
+
+/*Which game difficulty do we have a lower win rate?*/
+SELECT MIN(win_rate) "Lowest Win Rate", difficulty "Difficulty" from Sudoku;
+
+/* How many games total have we won? */
+SELECT SUM(games_won) "Total Games Won" FROM Sudoku;
+
+/*What is our average best time? */
+SELECT AVG(best_time) "Average Time (Minutes)", AVG(win_streak) "Average Win Streak" FROM Sudoku;
