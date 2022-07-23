@@ -70,13 +70,13 @@ SELECT movietitle, CASE WHEN yearreleased >2008 THEN "Newer" ELSE "Older" END as
 SELECT * FROM HarryPotterMovies WHERE movielength <150 OR rating = "GREAT";
 
 /*What is the total length of all movies?*/
-SELECT SUM(movielength) FROM HarryPotterMovies;
+SELECT SUM(movielength) "Total Movie Length" FROM HarryPotterMovies;
 
 /*How many movies are there in the Harry Potter series?*/
-SELECT COUNT(*) FROM HarryPotterMovies;
+SELECT COUNT(*) "Total Movies" FROM HarryPotterMovies;
 
 /*What is the average online rating?*/
-SELECT AVG(onlinerating)FROM MovieRatings;
+SELECT AVG(onlinerating) "Average Online Rating" FROM MovieRatings;
 
 /*How many  movies in each personal rating?*/
 SELECT rating, COUNT(*) FROM HarryPotterMovies GROUP BY rating;
