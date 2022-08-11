@@ -1,4 +1,5 @@
 /*Tables regarding Harry Potter Movie Franchise*/
+/*These tables were created so I can play with different concepts with my own unique data set.*/
 
 CREATE TABLE HarryPotterMovies(
     id INTEGER PRIMARY KEY, 
