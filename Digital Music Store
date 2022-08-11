@@ -1,0 +1,107 @@
+/*Analyzing data from a digital music store.*/
+
+/*Which customers are not in the US?*/
+SELECT FirstName, LastName, Country 
+FROM chinook.customers 
+WHERE Country != "USA"
+
+/*Which customers are from Germany?*/
+SELECT FirstName, LastName, City
+FROM chinook.customers
+WHERE Country = "Germany";
+
+/*Which customers are in North America?*/
+SELECT FirstName, LastName, Country
+FROM chinook.customers
+WHERE Country IN ('USA', 'Canada', 'Mexico');
+
+/*Show invoice for customers in France*/
+SELECT customer.FirstName, customer.LastName, invoice.InvoiceId, invoice.InvoiceDate, invoice.billingcountry
+FROM chinook.invoices as invoice
+LEFT JOIN chinook.customers as customer 
+on invoice.CustomerId = customer.CustomerId 
+WHERE invoice.BillingCountry = "France";
+
+
+/*Show all employees who are IT Staff*/
+SELECT * FROM chinook.Employees
+WHERE Title = "IT Staff";
+
+/*What all countries do we sell to?*/
+SELECT DISTINCT BillingCountry FROM chinook.Invoices ;
+
+/*Which invoices belong to which sales agent?*/
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+FROM chinook.Employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId
+ORDER BY InvoiceId ASC;
+
+/*View all invoice data sorted by Customer*/
+SELECT emp.LastName, emp.Firstname, cust.FirstName, cust.LastName, cust.Country, inv.total
+FROM chinook.employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId
+ORDER BY cust.LastName ASC;
+
+/*How many invoices in 2010?*/
+SELECT COUNT(*)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2010-01-01' AND '2010-12-31';
+
+/*What were the total sales for 2010?*/
+SELECT SUM(Total)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2010-01-01' AND '2010-12-31';
+
+/*What are the total sales for each sales agent?*/
+SELECT emp.FirstName, emp.LastName,
+ROUND(SUM(Inv.Total), 2) as 'Total Sales' 
+FROM chinook.Employees emp
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent' 
+GROUP BY emp.FirstName;
+
+/*Which sales agent made the most sales in 2010?*/
+SELECT emp.FirstName, emp.LastName,
+ROUND(SUM(Inv.Total), 2) as 'Total Sales' 
+FROM chinook.Employees emp
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent' 
+AND Inv.InvoiceDate LIKE '2010%' 
+GROUP BY emp.FirstName
+ORDER BY (round(sum(Inv.Total), 2)) DESC LIMIT 1;
+
+/*Which tracks were associated with what invoices?*/
+SELECT t.Name, i.InvoiceLineId
+FROM chinook.Invoice_items i
+JOIN chinook.Tracks t ON i.TrackId = t.TrackId
+ORDER BY Name ASC;
+
+/*What is the full data for each track purchased and the invoice associated?*/
+SELECT t.Name, t.Composer, i.InvoiceLineId
+FROM chinook.Invoice_items i 
+JOIN chinook.Tracks t ON i.TrackId = t.TrackId
+ORDER BY Name ASC;
+
+/*What are all the tracks available for purchase including which album, media track and genre?*/
+SELECT t.Name AS 'Track Name', a.Title AS 'Album Title', m.Name AS 'Media Type', g.Name AS 'Genre'
+FROM chinook.tracks t
+JOIN chinook.Albums a on a.AlbumId = t.AlbumId
+JOIN chinook.Media_Types m on m.MediaTypeId = t.MediaTypeId
+JOIN chinook.Genres g on g.GenreId = t.GenreId;
+
+/*How many total tracks are up for purchase?*/
+SELECT COUNT(*)
+FROM chinook.tracks;
+
+/*How many tracks does each composer have up for purchase?*/
+SELECT composer, count(composer) as Count from chinook.tracks
+GROUP BY composer;
+
